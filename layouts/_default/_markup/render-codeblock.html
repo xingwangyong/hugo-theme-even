@@ -1,20 +1,13 @@
 {{/* layouts/_default/_markup/render-codeblock.html */}}
 
-{{/* Use .Type instead of deprecated .Lang to get language */}}
-{{- $lang := .Type -}}
+{{- $lang := .Type | default "plaintext" -}}
 
 {{- if eq $lang "math" -}}
-  {{/* If language is "math", render as math formula */}}
   <div class="math-block">
   $$
   {{- .Inner | safeHTML -}}
   $$
   </div>
 {{- else -}}
-  {{/* Otherwise, use Hugo's default syntax highlighting */}}
-  {{- with .Page.Highlighter -}}
-    {{- .Highlight .Inner $lang .Options | safeHTML -}}
-  {{- else -}}
-    <pre><code>{{ .Inner }}</code></pre>
-  {{- end -}}
+  {{- highlight .Inner $lang "" | safeHTML -}}
 {{- end -}}
