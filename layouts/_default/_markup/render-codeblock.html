@@ -1,0 +1,19 @@
+{{/* layouts/_default/_markup/render-codeblock.html */}}
+
+{{- $lang := .Type | default .Lang -}}
+
+{{- if eq $lang "math" -}}
+  {{/* If the language is math, process it as a math formula */}}
+  <div class="math-block">
+  $$
+  {{- .Inner | safeHTML -}}
+  $$
+  </div>
+{{- else -}}
+  {{/* Otherwise, use Hugo's default syntax highlighting logic */}}
+  {{- with .Page.Highlighter -}}
+    {{- .Highlight .Inner $lang .Options | safeHTML -}}
+  {{- else -}}
+    <pre><code>{{ .Inner }}</code></pre>
+  {{- end -}}
+{{- end -}}
